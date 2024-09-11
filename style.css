@@ -1,0 +1,106 @@
+html:root {
+    font-family: Arial, Helvetica, sans-serif;
+    --btn-primary-clr: rgb(35, 80, 244);
+    --btn-hover-primary-clr: rgb(35, 80, 244, 0.8);
+}
+
+body {
+    margin: 0px 25px;
+}
+
+/*Text styles */
+h2 {
+    margin: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid gray;
+    width: 100%;
+}
+
+th {
+    padding: 7px 20px;
+    background-color: #76a3fd;
+    font-size: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 10px 20px;
+    font-size: 12px;
+}
+
+button {
+    cursor: pointer;
+}
+
+#new-book {
+    padding: 8px 15px;
+    border: none;
+    font-size: 12px;
+    border-radius: 5px;
+    background-color: var(--btn-primary-clr);
+    color: #f6f6f6;
+    font-weight: 900;
+    float: right;
+    margin-bottom: 8px;
+}
+
+#new-book:hover{
+    background-color: var(--btn-hover-primary-clr);
+
+}
+
+/* Modal elements */
+
+#modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); 
+}
+
+#modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid gray;
+    max-width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+#modal-header {
+    margin: 10px;
+}
+
+#modal-body {
+    margin: 20px;
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 5px;
+    margin: 8px 0;
+    border-radius: 3px;
+    border: 1px solid gray;
+    box-sizing: border-box;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#close {
+    cursor: pointer;
+    font-size: 22px;
+    color: #2f2f2f;
+    float: right;
+}

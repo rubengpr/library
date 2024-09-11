@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Library</title>
+</head>
+<body>
+    <h1>Ruben's Library</h1>
+    <button id="new-book">+ New book</button>
+    <div id="table-container">
+        <table id="library-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Pages</th>
+                    <th>Read</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
+    <div id="modal">
+        <div id="modal-content">
+            <div id="modal-header">
+                <span id="close">&times;</span>
+                <h2>Add a new book</h2>
+            </div>
+            <div id="modal-body">
+                <form action="">
+                    <label for="title">Book title</label>
+                    <input id="title" name="title" type="text">
+                    
+                    <label for="author">Author name</label>
+                    <input id="author" name="author" type="text">
+                    
+                    <label for="pages">Number of pages</label>
+                    <input id="pages" name="pages" type="number">
+                    
+                    <label for="read">Read</label>
+                    <input id="read" name="read" type="checkbox">
+
+                    <button id="modal-button">Add book</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
