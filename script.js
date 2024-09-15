@@ -10,29 +10,29 @@ const myLibrary = [
         title: "Build",
         author: "Tony Fadell",
         pages: 400,
-        read: true,
+        isRead: true,
     },
 
     {
         title: "El Quijote",
         author: "Miguel de Cervantes",
         pages: 200,
-        read: false,
+        isRead: false,
     },
 
     {
         title: "Steve Jobs",
         author: "Walter Isaacson",
         pages: 550,
-        read: true,
+        isRead: true,
     }
 ];
 
-function Book(title, author, pages, read) {
+function Book(title, author, pages, isRead) {
   this.title = title
   this.author = author
   this.pages = pages
-  this.read = read
+  this.isRead = isRead
 }
 
 function removeBook(event) {
@@ -42,6 +42,10 @@ function removeBook(event) {
     displayLibrary(); // Re-render the table
 }
 
+function readStatus(readValue) {
+    return readValue ? "Yes" : "No";
+}
+
 // Gets each object and its properties, and displays it on the table
 function displayLibrary() {
     myLibrary.forEach((book, index) => {
@@ -49,7 +53,13 @@ function displayLibrary() {
 
         for (const key in book) {
             const cell = document.createElement('td');
-            cell.textContent = book[key];
+
+            if (key === "isRead") {
+                cell.textContent = readStatus(book[key]);
+            } else {
+                cell.textContent = book[key];
+            }
+
             row.appendChild(cell);
         }
 
@@ -76,13 +86,14 @@ function newBook() {
 function closeModal() {
     modal.style.display = "none"
     modal.style.removeProperty('flex-direction');
+    newBookButton.blur();
 }
 
 function addBook(event) {
     const titleValue = document.getElementById("title").value
     const authorValue = document.getElementById("author").value
     const pagesValue = document.getElementById("pages").value
-    const readValue = document.getElementById("read").value
+    const readValue = document.getElementById("is-read").checked
 
     const newRow = new Book(titleValue, authorValue, pagesValue, readValue);
 
@@ -92,15 +103,27 @@ function addBook(event) {
 
     for (const key in newRow) {
         const rowBook = document.createElement("td");
-        rowBook.textContent = newRow[key];
+
+        if (key === "isRead") {
+            rowBook.textContent = readStatus(newRow[key]);
+        } else {
+            rowBook.textContent = newRow[key];    
+        }
+
         addRow.appendChild(rowBook);
     }
 
-    tableBody.appendChild(addRow)
+    tableBody.appendChild(addRow);
 
     modal.style.display = "none";
 
     event.preventDefault();
+
+    document.getElementById("title").value = "";
+    document.getElementById("author").value = "";
+    document.getElementById("pages").value = "";
+    document.getElementById("read").checked = false;
+
 }
 
 newBookButton.addEventListener("click", newBook)
@@ -110,5 +133,11 @@ window.addEventListener("click", function(event) {
     if (event.target === modal) {
         modal.style.display = "none";
         modal.style.removeProperty('flex-direction');
+    }
+});
+
+window.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeModal();
     }
 });
