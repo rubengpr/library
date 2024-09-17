@@ -3,7 +3,8 @@ const tableBody = document.getElementById("table-body");
 const newBookButton = document.getElementById("new-book")
 const modal = document.getElementById("modal")
 const closeModalButton = document.getElementById("close")
-const modalButton = document.getElementById("modal-button")
+const modalButton = document.getElementById("modal-button");
+const searchBar = document.getElementById("search-bar");
 
 const myLibrary = [
     {
@@ -37,16 +38,20 @@ function Book(title, author, pages, isRead) {
 
 function removeBook(event) {
     const index = event.target.getAttribute("data-index");
-    myLibrary.splice(index, 1); // Remove the book from the array
-    tableBody.innerHTML = ""; // Clear the table body
-    displayLibrary(); // Re-render the table
+    myLibrary.splice(index, 1);
+    tableBody.innerHTML = "";
+    displayLibrary();
 }
 
 function readStatus(readValue) {
     return readValue ? "Yes" : "No";
 }
 
-// Gets each object and its properties, and displays it on the table
+function markRead(readValue) {
+    return readValue ? "Mark as unread" : "Mark as read";
+}
+
+
 function displayLibrary() {
     myLibrary.forEach((book, index) => {
         const row = document.createElement('tr')
@@ -75,13 +80,26 @@ function displayLibrary() {
     })
 };
 
-//Runs the function every time we reload the page
 displayLibrary();
 
 function newBook() {
     modal.style.display = "flex";
     modal.style.flexDirection = "column";
 }
+
+function filter() {
+    const searchTerm = searchBar.value.toLowerCase();
+    const rows = tableBody.getElementsByTagName('tr');
+
+    Array.from(rows).forEach(row => {
+        const title = row.cells[0].textContent.toLowerCase();
+        const author = row.cells[1].textContent.toLowerCase();
+        row.style.display = title.includes(searchTerm) || author.includes(searchTerm) ? '' : 'none';
+    });
+};
+
+searchBar.addEventListener('input', filter);
+
 
 function closeModal() {
     modal.style.display = "none"
@@ -99,6 +117,8 @@ function addBook(event) {
 
     myLibrary.push(newRow);
 
+    const index = myLibrary.length - 1;
+
     const addRow = document.createElement("tr")
 
     for (const key in newRow) {
@@ -111,7 +131,16 @@ function addBook(event) {
         }
 
         addRow.appendChild(rowBook);
+
     }
+
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Remove";
+    removeButton.setAttribute("data-index", index);
+    removeButton.addEventListener("click", removeBook);
+    const removeCell = document.createElement("td");
+    removeCell.appendChild(removeButton);
+    addRow.appendChild(removeCell);
 
     tableBody.appendChild(addRow);
 
@@ -122,7 +151,7 @@ function addBook(event) {
     document.getElementById("title").value = "";
     document.getElementById("author").value = "";
     document.getElementById("pages").value = "";
-    document.getElementById("read").checked = false;
+    document.getElementById("is-read").checked = false;
 
 }
 

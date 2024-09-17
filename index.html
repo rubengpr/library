@@ -11,7 +11,10 @@
         <h1>📚 Ruben's Library</h1>
     </div>
     <div class="content">
-        <button id="new-book">+ New book</button>
+        <div class="top-table">
+            <input type="text" id="search-bar" placeholder="Search...">
+            <button id="new-book">+ New book</button>
+        </div>
         <div id="table-container">
             <table id="library-table">
                 <thead>
@@ -39,22 +42,22 @@
                 <form action="">
                     <div class="label-input">
                         <label for="title">Book title</label>
-                        <input id="title" name="title" type="text" placeholder="The Fellowship of the Ring">
+                        <input class="modal-input" id="title" name="title" type="text" placeholder="The Fellowship of the Ring">
                     </div>
                         
                     <div class="label-input">
                         <label for="author">Author name</label>
-                        <input id="author" name="author" type="text" placeholder="J. R. R. Tolkien">
+                        <input class="modal-input" id="author" name="author" type="text" placeholder="J. R. R. Tolkien">
                     </div>
                         
                     <div class="label-input">
                         <label for="pages">Number of pages</label>
-                        <input id="pages" name="pages" type="number" placeholder="432">
+                        <input class="modal-input" id="pages" name="pages" type="number" placeholder="432">
                     </div>
                         
                     <div class="label-input-checkbox">
                         <input id="is-read" name="is-read" type="checkbox">
-                        <label for="is-read" id>Read</label>
+                        <label for="is-read" class="is-read">Read</label>
                     </div>
 
                     <div id="modal-footer">
