@@ -5,6 +5,8 @@ const modal = document.getElementById("modal")
 const closeModalButton = document.getElementById("close")
 const modalButton = document.getElementById("modal-button");
 const searchBar = document.getElementById("search-bar");
+const dropdownMenu = document.getElementById("dropdown-menu");
+const removeButton = document.getElementById("remove-button");
 
 const myLibrary = [
     {
@@ -40,6 +42,7 @@ function removeBook(event) {
     const index = event.target.getAttribute("data-index");
     myLibrary.splice(index, 1);
     tableBody.innerHTML = "";
+    dropdownMenu.style.display = "none"
     displayLibrary();
 }
 
@@ -52,35 +55,81 @@ function markRead(readValue) {
 }
 
 
+let activeButton = null;
+
+// Ensure dropdown is hidden initially
+dropdownMenu.style.display = "none";
+
+function toggleMenu(event, button) {
+    const buttonRect = button.getBoundingClientRect();
+
+    // Toggle menu visibility and position
+    if (activeButton === button) {
+        dropdownMenu.style.display = "none";
+        activeButton = null;
+    } else {
+        dropdownMenu.style.position = "absolute";
+        dropdownMenu.style.left = `${buttonRect.left - 60}px`;
+        dropdownMenu.style.top = `${buttonRect.bottom}px`;
+        dropdownMenu.style.display = "flex"; // Show dropdown
+        activeButton = button;
+    }
+
+    event.stopPropagation(); // Prevent click from propagating
+}
+
+// Close the dropdown when clicking outside of it
+window.addEventListener("click", function(event) {
+    if (activeButton && !dropdownMenu.contains(event.target) && !activeButton.contains(event.target)) {
+        dropdownMenu.style.display = "none"; // Hide dropdown
+        activeButton = null; // Reset active button
+    }
+});
+
+
+// Close the dropdown when clicking outside of it
+window.addEventListener("click", function(event) {
+    const dropdownMenu = document.getElementById("dropdown-menu");
+
+    // Check if the click is outside of the dropdown and the active button
+    if (activeButton && !dropdownMenu.contains(event.target) && !activeButton.contains(event.target)) {
+        dropdownMenu.style.display = "none";
+        activeButton = null;
+    }
+});
+
+// Add event listeners for menu buttons in the displayLibrary function
 function displayLibrary() {
+    tableBody.innerHTML = ""; // Clear table before appending
+
     myLibrary.forEach((book, index) => {
-        const row = document.createElement('tr')
+        const row = document.createElement('tr');
 
         for (const key in book) {
             const cell = document.createElement('td');
-
-            if (key === "isRead") {
-                cell.textContent = readStatus(book[key]);
-            } else {
-                cell.textContent = book[key];
-            }
-
+            cell.textContent = key === "isRead" ? readStatus(book[key]) : book[key];
             row.appendChild(cell);
         }
 
-        const removeButton = document.createElement("button");
-        removeButton.textContent = "Remove";
-        removeButton.setAttribute("data-index", index);
-        removeButton.addEventListener("click", removeBook);
-        const removeCell = document.createElement("td");
-        removeCell.appendChild(removeButton);
-        row.appendChild(removeCell);
+        const menuButton = document.createElement("img");
+        menuButton.setAttribute("class", "icon");
+        menuButton.setAttribute("src", "images/menu.svg");
+        const menuCell = document.createElement("td");
+        menuCell.setAttribute("class", "icon-cell");
+        menuCell.appendChild(menuButton);
+        row.appendChild(menuCell);
 
         tableBody.appendChild(row);
-    })
-};
 
+        // Reattach event listener to the menu button after adding it to DOM
+        menuButton.addEventListener('click', (event) => toggleMenu(event, menuButton));
+    });
+}
+
+// Call displayLibrary to initialize the table
 displayLibrary();
+
+
 
 function newBook() {
     modal.style.display = "flex";
@@ -134,14 +183,6 @@ function addBook(event) {
 
     }
 
-    const removeButton = document.createElement("button");
-    removeButton.textContent = "Remove";
-    removeButton.setAttribute("data-index", index);
-    removeButton.addEventListener("click", removeBook);
-    const removeCell = document.createElement("td");
-    removeCell.appendChild(removeButton);
-    addRow.appendChild(removeCell);
-
     tableBody.appendChild(addRow);
 
     modal.style.display = "none";
@@ -154,6 +195,8 @@ function addBook(event) {
     document.getElementById("is-read").checked = false;
 
 }
+
+removeButton.addEventListener("click", removeBook)
 
 newBookButton.addEventListener("click", newBook)
 closeModalButton.addEventListener("click", closeModal)
